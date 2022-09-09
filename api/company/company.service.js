@@ -1,3 +1,4 @@
+const { populate } = require('./company.model');
 const Company = require('./company.model');
 
 function getAllCompany() {
@@ -5,7 +6,7 @@ function getAllCompany() {
 }
 
 function getByIdCompany(id) {
-  return Company.findById(id);
+  return Company.findById(id).populate('owner');
 }
 function findCompanyByEmail(email) {
   return Company.findOne({ email: email });
