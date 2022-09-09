@@ -6,7 +6,7 @@ function getAllCompany() {
 }
 
 function getByIdCompany(id) {
-  return Company.findById(id);
+  return Company.findById(id).populate('owner');
 }
 function findCompanyByEmail(email) {
   return Company.findOne({ email: email });
