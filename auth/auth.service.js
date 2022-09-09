@@ -1,32 +1,56 @@
 const jwt = require('jsonwebtoken');
-//const compose = requeri('composable-middleware');
+const compose = requeri('composable-middleware');
+
 const { findUserByEmail } = require('../api/user/user.service');
 
-async function isAuthenticated(req, res, next) {
-  /*const { authorization } = req.headers;
-  const token = authorization?.split(' ')[1];*/
+function isAuthenticated() {
+  return compose().use(async(req, res, next) {
+    /*const { authorization } = req.headers;
+    const token = authorization?.split(' ')[1];*/
+  
+    const authheader = req.headers?.authorization;
 
-  const authheader = req.headers?.authorization;
-  if (!authheader) {
-    return res.status(401).json({ message: 'Unauthorized' });
-  }
-  const token = authheader.split(' ')[1];
+    if (!authheader) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
 
-  // validate token
-  const decoded = await verifyToken(token);
-  if (!decoded) {
-    return res.status(401).json({ message: 'Unauthorized' });
-  }
-  // add user to request
-  const { email } = decoded;
-  const user = await findUserByEmail(email);
-  if (!user) {
-    return res.status(401).json({ message: 'User not found' });
-  }
-  req.user = user;
+    const token = authheader.split(' ')[1];
+  
+    // validate token
+    const decoded = await verifyToken(token);
 
-  return next();
-  return;
+    if (!decoded) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    // add user to request
+    const { email } = decoded;
+    const user = await findUserByEmail(email);
+
+    if (!user) {
+      return res.status(401).json({ message: 'User not found' });
+    }
+    req.user = user;
+  
+    next();
+    return;
+  });
+}
+
+function hasRole(roleRequired = []) {
+  if (!roleRequired) {
+    throw new Error('Required role needs to be set');
+  }
+  return compose()
+    .use(isAuthenticated)
+    .use((req, res, next) => {
+      const { role } = req.user;
+      if (roleRequired.includes(role)) {
+        next();
+      } else {
+        return res.status(403).json({ message: 'Forbidden' });
+      }
+    });
 }
 
 function signToken(payload) {
@@ -45,6 +69,7 @@ async function verifyToken(token) {
   }
 }
 module.exports = {
+  hasRole,
   isAuthenticated,
   signToken,
   verifyToken,
