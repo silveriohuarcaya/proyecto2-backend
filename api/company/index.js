@@ -1,4 +1,4 @@
-const { Router } = require('Express');
+const { Router } = require('express');
 
 const {
   getAllCompanyHandler,
