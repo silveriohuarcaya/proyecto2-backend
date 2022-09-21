@@ -27,7 +27,7 @@ async function getByIdUserHandler(req, res) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const profile = user.profile;
+    const { profile } = user.profile;
 
     return res.json(profile);
   } catch (error) {
