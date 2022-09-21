@@ -1,15 +1,14 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const { verifyToken } = require('../../auth/auth.service');
 
 const {
   getAllUser,
   getByIdUser,
-  findUserByEmail,
   createUser,
   updateUser,
   deleteUser,
 } = require('./user.service');
+const { sendNodeMailer } = require('../../utils/mail');
 
 async function getAllUserHandler(req, res) {
   try {
@@ -38,11 +37,13 @@ async function getByIdUserHandler(req, res) {
 
 async function createUserHandler(req, res) {
   const userData = req.body;
+
   const { authorization } = req.headers;
   const token = authorization.split(' ')[1];
 
   try {
     const payload = await verifyToken(token);
+    console.log(payload);
 
     if (userData.password && userData.password.length >= 6) {
       const salt = await bcrypt.genSalt(10);
@@ -50,6 +51,32 @@ async function createUserHandler(req, res) {
     }
 
     const user = await createUser(userData);
+    // send email to user
+    const message = {
+      from: '"no-reply" <info@danasoft.com>', // sender address
+      to: user.email, // list of receivers
+      subject: 'Active account', // Subject line
+      html: `
+        <h1 style="color: green">Welcome</h1>
+      <p style="color: blue">Please click in this link to active account</p>
+      <a href="http://localhost:3000/verify-account/token" target="_blank" rel="noopener noreferrer">Verify</a>
+      `, // html body
+
+      attachments: [
+        {
+          // utf-8 string as an attachment
+          filename: 'text1.txt',
+          content: 'hello world',
+        },
+        {
+          // file and content type is derived from path
+          path: 'utils/corina gestion.docx',
+        },
+      ],
+    };
+
+    await sendNodeMailer(message);
+
     return res.status(201).json({ user });
   } catch (error) {
     return res.status(500).json({ error });
@@ -64,17 +91,17 @@ async function updateUserHandler(req, res) {
     if (!userData.password) {
       const user = await updateUser(id, userData);
       return res.status(200).json(user);
-    } else if (userData.password.length >= 6) {
+    }
+    if (userData.password.length >= 6) {
       const salt = await bcrypt.genSalt(10);
       userData.password = await bcrypt.hash(userData.password, salt);
 
       const user = await updateUser(id, userData);
       return res.status(200).json(user);
-    } else {
-      return res.status(400).json({
-        error: `password ${userData.password} is shorter than the minimum allowed length (6)`,
-      });
     }
+    return res.status(400).json({
+      error: `password ${userData.password} is shorter than the minimum allowed length (6)`,
+    });
   } catch (error) {
     return res.status(500).json({ error });
   }
@@ -85,6 +112,7 @@ async function deleteUserHandler(req, res) {
 
   try {
     const user = await deleteUser(id);
+    console.log(user);
     return res.status(200).json({ message: 'Delete User Successfully' });
   } catch (error) {
     return res.status(500).json({ error });
