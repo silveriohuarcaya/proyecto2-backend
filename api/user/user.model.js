@@ -57,12 +57,12 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-UserSchema.virtual('fullName').get(function () {
+UserSchema.virtual('fullName').get(function fullName() {
   const { firstName, lastName } = this;
   return `${firstName} ${lastName}`;
 });
 
-UserSchema.virtual('profile').get(function () {
+UserSchema.virtual('profile').get(function profile() {
   const { firstName, lastName, email, password, role, company } = this;
   return {
     firstName,
@@ -74,7 +74,7 @@ UserSchema.virtual('profile').get(function () {
   };
 });
 
-UserSchema.methods.comparePassword = function (password) {
+UserSchema.methods.comparePassword = function comparePassword(password) {
   const user = this;
   const isMatch = bcrypt.compare(password, user.password);
   return isMatch;

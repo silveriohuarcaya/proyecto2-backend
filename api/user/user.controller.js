@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const { verifyToken } = require('../../auth/auth.service');
+const crypto = require('crypto');
 
 const {
   getAllUser,
@@ -50,6 +51,14 @@ async function createUserHandler(req, res) {
       userData.password = await bcrypt.hash(userData.password, salt);
     }
 
+    const hash = crypto
+      .createHash('sha256')
+      .update(userData.email)
+      .digest('hex');
+
+    userData.passwordResetToken = hash;
+    userData.passwordResetExpires = Date.now() + 3_600_000 * 24; // 24 hours;
+
     const user = await createUser(userData);
     // send email to user
     const message = {
@@ -58,8 +67,8 @@ async function createUserHandler(req, res) {
       subject: 'Active account', // Subject line
       html: `
         <h1 style="color: green">Welcome</h1>
-      <p style="color: blue">Please click in this link to active account</p>
-      <a href="http://localhost:3000/verify-account/token" target="_blank" rel="noopener noreferrer">Verify</a>
+      <p style="color: #0070f3">Please click in this link to active account</p>
+      <a href="http://localhost:3000/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify</a>
       `, // html body
 
       attachments: [

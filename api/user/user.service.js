@@ -10,6 +10,9 @@ function getByIdUser(id) {
 function findUserByEmail(email) {
   return User.findOne({ email: email });
 }
+function findOneUser(query) {
+  return User.findOne(query);
+}
 function createUser(user) {
   return User.create(user);
 }
@@ -22,6 +25,7 @@ function deleteUser(id) {
 module.exports = {
   getAllUser,
   getByIdUser,
+  findOneUser,
   findUserByEmail,
   createUser,
   updateUser,

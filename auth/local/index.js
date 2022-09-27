@@ -11,6 +11,6 @@ const router = Router();
 router.post('/login', loginHandler);
 //router.post('/change-password', changePasswordHandler);
 //router.post('/forgot.password', forgotPasswordHandler);
-//router.post('/verify-account', verifyAccountHandler);
+router.get('/verify-account/:token', verifyAccountHandler);
 
 module.exports = router;
