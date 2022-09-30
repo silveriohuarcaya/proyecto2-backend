@@ -40,7 +40,7 @@ async function createUserHandler(req, res) {
   const userData = req.body;
 
   const { authorization } = req.headers;
-  const token = authorization.split(' ')[1];
+  const token = authorization?.split(' ')[1];
 
   try {
     const payload = await verifyToken(token);

@@ -1,4 +1,5 @@
 const { findUserByEmail, findOneUser } = require('../../api/user/user.service');
+const { createUserHandler } = require('../../api/user/user.controller');
 const { signToken } = require('../../auth/auth.service');
 
 async function loginHandler(req, res, next) {
@@ -22,6 +23,9 @@ async function loginHandler(req, res, next) {
   } catch (error) {
     console.log(error);
   }
+}
+async function registerHandler(req, res, next) {
+  createUserHandler();
 }
 
 async function changePasswordHandler(req, res, next) {}
@@ -50,13 +54,11 @@ async function verifyAccountHandler(req, res, next) {
 
     const jwtoken = signToken({ email: user.email });
 
-    return res
-      .status(200)
-      .json({
-        token: jwtoken,
-        profile: user.profile,
-        message: 'Account activated',
-      });
+    return res.status(200).json({
+      token: jwtoken,
+      profile: user.profile,
+      message: 'Account activated',
+    });
   } catch (error) {
     return res.status(500).json(error);
   }
@@ -66,6 +68,7 @@ async function verifyAccountHandler(req, res, next) {
 
 module.exports = {
   loginHandler,
+  registerHandler,
   changePasswordHandler,
   forgotPasswordHandler,
   verifyAccountHandler,
