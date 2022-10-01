@@ -1,6 +1,6 @@
 const { findUserByEmail, findOneUser } = require('../../api/user/user.service');
 const { createUserHandler } = require('../../api/user/user.controller');
-const { signToken } = require('../../auth/auth.service');
+const { signToken } = require('../auth.service');
 
 async function loginHandler(req, res, next) {
   const { email, password } = req.body;
@@ -60,7 +60,7 @@ async function verifyAccountHandler(req, res, next) {
       message: 'Account activated',
     });
   } catch (error) {
-    return res.status(500).json(error);
+    return res.status(500).json({ error });
   }
 
   res.json({ message: 'verifyAccountHandler' });
