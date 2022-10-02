@@ -68,7 +68,7 @@ async function createUserHandler(req, res) {
       html: `
         <h1 style="color: green">Welcome</h1>
       <p style="color: #0070f3">Please click in this link to active account</p>
-      <a href="http://localhost:3000/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify</a>
+      <a href="https://pruebas6-react.vercel.app/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
       `, // html body
 
       attachments: [
