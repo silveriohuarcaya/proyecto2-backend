@@ -11,7 +11,7 @@ const {
 } = require('./user.service');
 const { sendNodeMailer } = require('../../utils/mail');
 
-const BASE_URL = `${process.env.SMTP_FRONT_URL}`;
+const BASE_URL = process.env.SMTP_FRONT_URL;
 
 async function getAllUserHandler(req, res) {
   try {
@@ -63,7 +63,6 @@ async function createUserHandler(req, res) {
 
     const user = await createUser(userData);
     // send email to user
-    // Silverio Huarcaya
     const message = {
       from: '"no-reply" <info@danasoft.com>', // sender address
       to: user.email, // list of receivers
