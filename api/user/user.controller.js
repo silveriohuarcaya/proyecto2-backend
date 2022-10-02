@@ -11,6 +11,8 @@ const {
 } = require('./user.service');
 const { sendNodeMailer } = require('../../utils/mail');
 
+const BASE_URL = `${process.env.SMTP_FRONT_URL}`;
+
 async function getAllUserHandler(req, res) {
   try {
     const users = await getAllUser();
@@ -61,6 +63,7 @@ async function createUserHandler(req, res) {
 
     const user = await createUser(userData);
     // send email to user
+    // Silverio Huarcaya
     const message = {
       from: '"no-reply" <info@danasoft.com>', // sender address
       to: user.email, // list of receivers
@@ -68,20 +71,25 @@ async function createUserHandler(req, res) {
       html: `
         <h1 style="color: green">Welcome</h1>
       <p style="color: #0070f3">Please click in this link to active account</p>
-      <a href="http://localhost:3000/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
-      `, // html body
+      <a href="${BASE_URL}/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
 
-      attachments: [
-        {
-          // utf-8 string as an attachment
-          filename: 'text1.txt',
-          content: 'hello world',
-        },
-        {
-          // file and content type is derived from path
-          path: 'utils/corina gestion.docx',
-        },
-      ],
+      `,
+      // html body
+      // <a href="http://localhost:3000/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
+      // <a href="${BASE_URL}/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
+
+      // documents adjunt
+      // attachments: [
+      //   {
+      //     // utf-8 string as an attachment
+      //     filename: 'text1.txt',
+      //     content: 'hello world',
+      //   },
+      //   {
+      //     // file and content type is derived from path
+      //     path: 'utils/corina gestion.docx',
+      //   },
+      // ],
     };
 
     await sendNodeMailer(message);
