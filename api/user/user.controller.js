@@ -71,6 +71,7 @@ async function createUserHandler(req, res) {
       html: `
         <h1 style="color: green">Welcome</h1>
       <p style="color: #0070f3">Please click in this link to active account</p>
+<<<<<<< HEAD
       <a href="${BASE_URL}/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
 
       `,
@@ -78,6 +79,13 @@ async function createUserHandler(req, res) {
       // <a href="http://localhost:3000/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
       // <a href="${BASE_URL}/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
 
+=======
+       <a href="${BASE_URL}/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
+      `,
+      // html body
+      // <a href="http://localhost:3000/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
+
+>>>>>>> e785c89 (fix url)
       // documents adjunt
       // attachments: [
       //   {
