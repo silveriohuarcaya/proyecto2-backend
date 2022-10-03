@@ -67,6 +67,7 @@ async function createUserHandler(req, res) {
     const message = {
       from: '"no-reply" <corwilgi@gmail.com>', // sender address
       to: user.email, // list of receivers
+
       subject: 'Active account template', // Subject line
 
       template_id: 'd-f57186e263564b85b2500f61aad1770a',
