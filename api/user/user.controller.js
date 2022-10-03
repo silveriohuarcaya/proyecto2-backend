@@ -11,6 +11,8 @@ const {
 } = require('./user.service');
 const { sendNodeMailer } = require('../../utils/mail');
 
+const BASE_URL = `${process.env.SMTP_FRONT_URL}`;
+
 async function getAllUserHandler(req, res) {
   try {
     const users = await getAllUser();
