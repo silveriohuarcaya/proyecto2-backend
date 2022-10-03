@@ -9,7 +9,8 @@ const {
   updateUser,
   deleteUser,
 } = require('./user.service');
-const { sendNodeMailer } = require('../../utils/mail');
+// const { sendNodeMailer } = require('../../utils/mail'); // Utilizando nodemailer
+const { sendMailSendGrid } = require('../../utils/mail'); // Utilizando sendgrid
 
 const BASE_URL = `${process.env.SMTP_FRONT_URL}`;
 
@@ -63,16 +64,27 @@ async function createUserHandler(req, res) {
 
     const user = await createUser(userData);
     // send email to user
-    // Silverio Huarcaya
     const message = {
       from: '"no-reply" <corwilgi@gmail.com>', // sender address
       to: user.email, // list of receivers
-      subject: 'Active account', // Subject line
-      html: `
-        <h1 style="color: green">Welcome</h1>
-      <p style="color: #0070f3">Please click in this link to active account</p>
-      <a href="${process.env.SMTP_FRONT_URL}/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
-      `,
+
+      subject: 'Active account template', // Subject line
+
+      template_id: 'd-f57186e263564b85b2500f61aad1770a',
+      // template_id: 'd-5d14a2b341c443f8bd326d8115c9fbac',
+
+      dynamic_template_data: {
+        firstName: user.profile.firstName.toUpperCase(),
+        lastName: user.profile.lastName.toUpperCase(),
+        url: `${process.env.SMTP_FRONTEND_URL}/verify-account/${hash}`,
+      },
+
+      // html: `
+      //   <h1 style="color: green">Welcome</h1>
+      // <p style="color: #0070f3">Please click in this link to active account</p>
+      // <a href="${process.env.SMTP_FRONT_URL}/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
+      // `,
+
       // html body
       // <a href="http://localhost:3000/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
       // <a href="${BASE_URL}/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
@@ -91,7 +103,8 @@ async function createUserHandler(req, res) {
       // ],
     };
 
-    await sendNodeMailer(message);
+    // await sendNodeMailer(message);
+    await sendMailSendGrid(message);
 
     return res.status(201).json({ user });
   } catch (error) {
