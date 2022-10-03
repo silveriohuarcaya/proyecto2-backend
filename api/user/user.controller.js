@@ -65,14 +65,13 @@ async function createUserHandler(req, res) {
     // send email to user
     // Silverio Huarcaya
     const message = {
-      from: '"no-reply" <info@danasoft.com>', // sender address
+      from: '"no-reply" <corwilgi@gmail.com>', // sender address
       to: user.email, // list of receivers
       subject: 'Active account', // Subject line
       html: `
         <h1 style="color: green">Welcome</h1>
       <p style="color: #0070f3">Please click in this link to active account</p>
-      <a href="${BASE_URL}/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
-
+      <a href="${process.env.SMTP_FRONT_URL}/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
       `,
       // html body
       // <a href="http://localhost:3000/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
