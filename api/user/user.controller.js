@@ -12,8 +12,6 @@ const {
 // const { sendNodeMailer } = require('../../utils/mail'); // Utilizando nodemailer
 const { sendMailSendGrid } = require('../../utils/mail'); // Utilizando sendgrid
 
-const BASE_URL = `${process.env.SMTP_FRONT_URL}`;
-
 async function getAllUserHandler(req, res) {
   try {
     const users = await getAllUser();
@@ -63,6 +61,7 @@ async function createUserHandler(req, res) {
     userData.passwordResetExpires = Date.now() + 3_600_000 * 24; // 24 hours;
 
     const user = await createUser(userData);
+
     // send email to user
     const message = {
       from: '"no-reply" <corwilgi@hotmail.com>', // sender address
@@ -70,8 +69,7 @@ async function createUserHandler(req, res) {
 
       subject: 'Active account template', // Subject line
 
-      template_id: 'd-04e1462b459f4052a63885892103631f ',
-
+      template_id: 'd-04e1462b459f4052a63885892103631f',
       // template_id: 'd-5d14a2b341c443f8bd326d8115c9fbac',
 
       dynamic_template_data: {
