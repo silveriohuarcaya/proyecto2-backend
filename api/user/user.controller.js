@@ -65,12 +65,12 @@ async function createUserHandler(req, res) {
     const user = await createUser(userData);
     // send email to user
     const message = {
-      from: '"no-reply" <corwilgi@gmail.com>', // sender address
+      from: '"no-reply" <corwilgi@hotmail.com>', // sender address
       to: user.email, // list of receivers
 
       subject: 'Active account template', // Subject line
 
-      template_id: 'd-f57186e263564b85b2500f61aad1770a',
+      template_id: 'd-04e1462b459f4052a63885892103631f ',
       // template_id: 'd-5d14a2b341c443f8bd326d8115c9fbac',
 
       dynamic_template_data: {
