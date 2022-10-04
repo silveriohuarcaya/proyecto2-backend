@@ -71,6 +71,7 @@ async function createUserHandler(req, res) {
       subject: 'Active account template', // Subject line
 
       template_id: 'd-04e1462b459f4052a63885892103631f ',
+
       // template_id: 'd-5d14a2b341c443f8bd326d8115c9fbac',
 
       dynamic_template_data: {
