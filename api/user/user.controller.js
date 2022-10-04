@@ -70,7 +70,7 @@ async function createUserHandler(req, res) {
       subject: 'Active account template', // Subject line
 
       // template_id: 'd-04e1462b459f4052a63885892103631f',
-      template_id: 'd-642dae20bfe8419f96e97cdac1fef846 ',
+      template_id: 'd-642dae20bfe8419f96e97cdac1fef846',
 
       dynamic_template_data: {
         firstName: user.profile.firstName.toUpperCase(),
