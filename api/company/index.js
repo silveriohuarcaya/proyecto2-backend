@@ -13,8 +13,10 @@ const router = Router();
 
 router.get('/', getAllCompanyHandler);
 router.get('/:id', getByIdCompanyHandler);
-router.post('/', isAuthenticated(), createCompanyHandler);
-router.patch('/:id', isAuthenticated(), updateCompanyHandler);
+// router.post('/', isAuthenticated(), createCompanyHandler);
+router.post('/', isAuthenticated, createCompanyHandler);
+// router.patch('/:id', isAuthenticated(), updateCompanyHandler);
+router.patch('/:id', isAuthenticated, updateCompanyHandler);
 router.delete('/:id', hasRole(['admin', 'user']), deleteCompanyHandler);
 
 module.exports = router;
