@@ -3,38 +3,37 @@ const compose = require('composable-middleware');
 
 const { findUserByEmail } = require('../api/user/user.service');
 
-function isAuthenticated() {
-  return compose().use(async(req, res, next) => {
-    /*const { authorization } = req.headers;
-    const token = authorization?.split(' ')[1];*/
-  
-    const authheader = req.headers?.authorization;
+async function isAuthenticated(req, res, next) {
+  // return compose().use(async (req, res, next) => {
 
-    if (!authheader) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
+  const authHeader = req.headers?.authorization;
 
-    const token = authheader.split(' ')[1];
-  
-    // validate token
-    const decoded = await verifyToken(token);
+  if (!authHeader) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
 
-    if (!decoded) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
+  const token = authHeader.split(' ')[1];
 
-    // add user to request
-    const { email } = decoded;
-    const user = await findUserByEmail(email);
+  // validate token
+  const decoded = await verifyToken(token);
 
-    if (!user) {
-      return res.status(401).json({ message: 'User not found' });
-    }
-    req.user = user;
-  
-    next();
-    return;
-  });
+  if (!decoded) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  // add user to request
+  const { email } = decoded;
+  const user = await findUserByEmail(email);
+
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  req.user = user;
+
+  next();
+  return true;
+  // }
 }
 
 function hasRole(roleRequired = []) {
@@ -54,20 +53,20 @@ function hasRole(roleRequired = []) {
 }
 
 function signToken(payload) {
-  const token = jwt.sign(payload, 'EL_S#CR3TO_DE_AMOR', {
-    expiresIn: '1h',
-  });
+  const token = jwt.sign(payload, 'EL_S#CR3T_DE_AMOR', { expiresIn: '1h' });
+
   return token;
 }
 
 async function verifyToken(token) {
   try {
-    const payload = await jwt.verify(token, 'EL_S#CR3TO_DE_AMOR');
+    const payload = await jwt.verify(token, 'EL_S#CR3T_DE_AMOR');
     return payload;
   } catch (error) {
     return null;
   }
 }
+
 module.exports = {
   hasRole,
   isAuthenticated,
