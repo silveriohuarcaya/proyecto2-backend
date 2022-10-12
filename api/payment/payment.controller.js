@@ -10,25 +10,6 @@ async function handlerPayment(req, res) {
   const { user } = req;
   const { paymentMethod, amount } = req.body;
 
-  // try {
-  //   const { id, card } = paymentMethod;
-
-  //   let customer = null;
-
-  //   const payment = await makePayment({
-  //     paymentMethod: paymentMethod,
-  //     amount,
-  //     // customer,
-  //   });
-
-  //   return res.json({ message: 'success', payment });
-
-  //   res.json({ amount, user, payment });
-  // } catch (error) {
-  //   console.log(error);
-  //   return res.status(500).json(error);
-  // }
-
   try {
     const { id, card } = paymentMethod;
 
@@ -65,7 +46,6 @@ async function handlerPayment(req, res) {
 
     const payment = await makePayment({
       paymentMethod: paymentCard,
-      // paymentMethod,
       amount,
       customer,
     });

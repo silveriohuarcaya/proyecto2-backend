@@ -63,12 +63,14 @@ UserSchema.virtual('fullName').get(function fullName() {
 });
 
 UserSchema.virtual('profile').get(function profile() {
-  const { firstName, lastName, email, password, role, company } = this;
+  const { firstName, lastName, email, password, isActive, role, company } =
+    this;
   return {
     firstName,
     lastName,
     email,
     password,
+    isActive,
     role,
     company,
   };
