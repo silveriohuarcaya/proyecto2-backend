@@ -3,6 +3,7 @@ const job = require('./api/job');
 const user = require('./api/user');
 const payment = require('./api/payment');
 const preference = require('./api/preference');
+
 const authLocal = require('./auth/local');
 
 function routes(app) {
