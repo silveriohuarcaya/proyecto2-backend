@@ -2,6 +2,7 @@ const company = require('./api/company');
 const job = require('./api/job');
 const user = require('./api/user');
 const payment = require('./api/payment');
+const preference = require('./api/preference');
 const authLocal = require('./auth/local');
 
 function routes(app) {
@@ -9,6 +10,7 @@ function routes(app) {
   app.use('/api/jobs', job);
   app.use('/api/users', user);
   app.use('/api/payments', payment);
+  app.use('/api/preferences', preference);
 
   //auth routes
   app.use('/auth/local', authLocal);

@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const {
   getAllUser,
   getByIdUser,
+  findUserByEmail,
   createUser,
   updateUser,
   deleteUser,
@@ -41,13 +42,16 @@ async function createUserHandler(req, res) {
   const userData = req.body;
 
   const { authorization } = req.headers;
+
   const token = authorization?.split(' ')[1];
+  console.log('silverio', token);
 
   try {
     const payload = await verifyToken(token);
-    console.log(payload);
 
-    if (userData.password && userData.password.length >= 6) {
+    const users = await findUserByEmail(userData.email);
+
+    if (!users && userData.password && userData.password.length >= 6) {
       const salt = await bcrypt.genSalt(10);
       userData.password = await bcrypt.hash(userData.password, salt);
     }
@@ -104,8 +108,8 @@ async function createUserHandler(req, res) {
 
     // await sendNodeMailer(message);
     await sendMailSendGrid(message);
-
-    return res.status(201).json({ user });
+    return res.status(200).json({ token, profile: user.profile });
+    // return res.status(201).json({ user });
   } catch (error) {
     return res.status(500).json({ error });
   }

@@ -11,11 +11,9 @@ async function createCustomer(user, paymentMethod) {
       name: `${user.firstName} ${user.lastName}`,
       payment_method: paymentMethod.id,
     });
-    console.log('huarcayacallñaupa', customer);
     return customer;
   } catch (error) {
     console;
-    console.log('Wilfredo callañaupa error', error);
     throw error;
   }
 }
@@ -41,9 +39,10 @@ async function makePayment({ paymentMethod, amount, customer }) {
       confirm: true,
       description: 'Email Real',
       customer: customer.id,
-      // receipt_email: true,
+      receipt_email: customer.email,
     });
 
+    console.log('Silverio Huarcaya', customer);
     return payment;
   } catch (error) {
     console.log('error', error);
