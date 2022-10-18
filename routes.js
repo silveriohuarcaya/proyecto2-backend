@@ -5,13 +5,16 @@ const payment = require('./api/payment');
 const preference = require('./api/preference');
 
 const authLocal = require('./auth/local');
+const product = require('./api/product');
 
 function routes(app) {
   app.use('/api/companies', company);
   app.use('/api/jobs', job);
-  app.use('/api/users', user);
-  app.use('/api/payments', payment);
   app.use('/api/preferences', preference);
+  app.use('/api/payments', payment);
+  app.use('/api/products', product);
+  app.use('/api/users', user);
+
 
   //auth routes
   app.use('/auth/local', authLocal);
