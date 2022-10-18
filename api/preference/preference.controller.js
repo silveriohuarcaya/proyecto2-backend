@@ -9,7 +9,7 @@ mercadopago.configure({
   access_token: process.env.MERCADOPAGO_ACCESS_TOKEN,
 });
 
-async function createPreferenceWebhok(req, res) {
+async function createPreferenceWebhook(req, res) {
   try {
     console.log(req.body);
     if (req.body.action === 'payment.created') {
@@ -67,4 +67,4 @@ async function createPreferenceHandler(req, res) {
   }
 }
 
-module.exports = { getAllPreferenceHandler, createPreferenceHandler, createPreferenceWebhok };
+module.exports = { getAllPreferenceHandler, createPreferenceHandler, createPreferenceWebhook };
