@@ -16,7 +16,6 @@ function routes(app) {
   app.use('/api/users', user);
   app.use('/api/mercadopago/webhook', preference);
 
-
   //auth routes
   app.use('/auth/local', authLocal);
   //app.use('/auth/facebook', facebook);
