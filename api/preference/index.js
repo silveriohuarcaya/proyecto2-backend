@@ -1,10 +1,10 @@
 const { Router } = require('express');
 
-const { handlerPreference } = require('./preference.controller');
-// const { isAuthenticated } = require('../../auth/auth.service');
+const { getAllPreferenceHandler, createPreferenceHandler } = require('./preference.controller');
 
 const router = Router();
 
-router.post('/', handlerPreference);
+router.get('/orders', getAllPreferenceHandler);
+router.post('/orders', createPreferenceHandler);
 
 module.exports = router;
