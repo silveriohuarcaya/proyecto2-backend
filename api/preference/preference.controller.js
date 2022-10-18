@@ -3,6 +3,7 @@ const mercadopago = require('mercadopago');
 const { getAllPreference, createPreference } = require('./preference.service');
 const { getByIdProduct } = require('../product/product.service');
 
+
 // Agrega credenciales
 mercadopago.configure({
   access_token: process.env.MERCADOPAGO_ACCESS_TOKEN,

@@ -15,6 +15,7 @@ function routes(app) {
   app.use('/api/products', product);
   app.use('/api/users', user);
 
+
   //auth routes
   app.use('/auth/local', authLocal);
   //app.use('/auth/facebook', facebook);
