@@ -9,6 +9,22 @@ mercadopago.configure({
   access_token: process.env.MERCADOPAGO_ACCESS_TOKEN,
 });
 
+async function createPreferenceWebhook(req, res) {
+  try {
+    console.log(req.body);
+    if (req.body.action === 'payment.created') {
+      console.log('Payment created');
+    } else if (req.body.action === 'payment.updated') {
+      console.log('Payment updated');
+      // actualizar el pedido
+      //envirle un correo al usuario diciendole que paso con el pedido
+    }
+    res.json({});
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}
+
 async function getAllPreferenceHandler(req, res) {
   try {
     const preferences = await getAllPreference();
@@ -41,6 +57,7 @@ async function createPreferenceHandler(req, res) {
         failure: `${process.env.SMTP_FRONTEND_URL}/mercadopago/failure`,
         pending: `${process.env.SMTP_FRONTEND_URL}/mercadopago/pending`,
       },
+      external_reference: order._id.toString(),
     };
 
     const response = await mercadopago.preferences.create(preference);
@@ -50,4 +67,4 @@ async function createPreferenceHandler(req, res) {
   }
 }
 
-module.exports = { getAllPreferenceHandler, createPreferenceHandler };
+module.exports = { getAllPreferenceHandler, createPreferenceHandler, createPreferenceWebhook };

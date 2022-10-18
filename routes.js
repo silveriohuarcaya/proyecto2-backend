@@ -14,7 +14,7 @@ function routes(app) {
   app.use('/api/payments', payment);
   app.use('/api/products', product);
   app.use('/api/users', user);
-
+  app.use('/api/mercadopago/webhook', preference);
 
   //auth routes
   app.use('/auth/local', authLocal);
