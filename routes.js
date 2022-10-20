@@ -6,6 +6,7 @@ const preference = require('./api/preference');
 
 const authLocal = require('./auth/local');
 const product = require('./api/product');
+const upload = require('./api/upload');
 
 function routes(app) {
   app.use('/api/companies', company);
@@ -15,6 +16,7 @@ function routes(app) {
   app.use('/api/products', product);
   app.use('/api/users', user);
   app.use('/api/mercadopago/webhook', preference);
+  app.use('/api/upload', upload);
 
   //auth routes
   app.use('/auth/local', authLocal);
