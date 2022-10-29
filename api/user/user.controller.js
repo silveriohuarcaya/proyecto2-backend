@@ -1,15 +1,7 @@
 const bcrypt = require('bcryptjs');
-const { verifyToken } = require('../../auth/auth.service');
 const crypto = require('crypto');
 
-const {
-  getAllUser,
-  getByIdUser,
-  findUserByEmail,
-  createUser,
-  updateUser,
-  deleteUser,
-} = require('./user.service');
+const { getAllUser, getByIdUser, findUserByEmail, createUser, updateUser, deleteUser } = require('./user.service');
 // const { sendNodeMailer } = require('../../utils/mail'); // Utilizando nodemailer
 const { sendMailSendGrid } = require('../../utils/mail'); // Utilizando sendgrid
 
@@ -41,14 +33,7 @@ async function getByIdUserHandler(req, res) {
 async function createUserHandler(req, res) {
   const userData = req.body;
 
-  const { authorization } = req.headers;
-
-  const token = authorization?.split(' ')[1];
-  console.log('silverio', token);
-
   try {
-    const payload = await verifyToken(token);
-
     const users = await findUserByEmail(userData.email);
 
     if (!users && userData.password && userData.password.length >= 6) {
@@ -56,10 +41,7 @@ async function createUserHandler(req, res) {
       userData.password = await bcrypt.hash(userData.password, salt);
     }
 
-    const hash = crypto
-      .createHash('sha256')
-      .update(userData.email)
-      .digest('hex');
+    const hash = crypto.createHash('sha256').update(userData.email).digest('hex');
 
     userData.passwordResetToken = hash;
     userData.passwordResetExpires = Date.now() + 3_600_000 * 24; // 24 hours;
@@ -108,7 +90,7 @@ async function createUserHandler(req, res) {
 
     // await sendNodeMailer(message);
     await sendMailSendGrid(message);
-    return res.status(200).json({ token, profile: user.profile });
+    return res.status(200).json({ profile: user.profile });
     // return res.status(201).json({ user });
   } catch (error) {
     return res.status(500).json({ error });

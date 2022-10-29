@@ -7,13 +7,14 @@ const {
   updateUserHandler,
   deleteUserHandler,
 } = require('./user.controller');
+const { isAuthenticated } = require('../../auth/auth.service');
 
 const router = Router();
 
 router.get('/', getAllUserHandler);
 router.get('/:id', getByIdUserHandler);
 router.post('/', createUserHandler);
-router.patch('/:id', updateUserHandler);
+router.patch('/:id', isAuthenticated, updateUserHandler);
 router.delete('/:id', deleteUserHandler);
 
 module.exports = router;

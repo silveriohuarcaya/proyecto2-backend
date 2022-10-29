@@ -1,20 +1,17 @@
-const {
-  makePayment,
-  createPayment,
-  createCustomer,
-  retrieveCustomer,
-} = require('./payment.service');
+const { makePayment, createPayment, createCustomer, retrieveCustomer } = require('./payment.service');
 const { updateUser } = require('../user/user.service');
 
+const { sendMailSendGrid } = require('../../utils/mail'); // Utilizando sendgrid
+
 async function handlerPayment(req, res) {
-  const { user } = req;
+  let { user } = req;
   const { paymentMethod, amount } = req.body;
 
   try {
     const { id, card } = paymentMethod;
 
     let customer = null;
-    if (!user?.payment?.customerId) {
+    if (!user?.payment?.customerId || user?.payment?.customerId !== id) {
       customer = await createCustomer(user, paymentMethod);
 
       const userToUpdate = {
@@ -33,12 +30,10 @@ async function handlerPayment(req, res) {
           ],
         },
       };
-      await updateUser(user._id, userToUpdate);
+      user = await updateUser(user._id, userToUpdate);
     }
 
     customer = await retrieveCustomer(user.payment.customerId);
-
-    console.log('silveriohuarcaya', user);
 
     const paymentCard = {
       id: user.payment.cards[0].paymentMethodId,
@@ -68,4 +63,31 @@ async function handlerPayment(req, res) {
   }
 }
 
-module.exports = { handlerPayment };
+async function sendEmailHandler(req, res, next) {
+  const { email, url } = req.body;
+
+  try {
+    // send email to user
+    const message = {
+      from: '"no-reply" <corwilgi@hotmail.com>', // sender address
+      to: email, // list of receivers
+
+      subject: 'Shooping stripe', // Subject line
+
+      template_id: 'd-04e1462b459f4052a63885892103631f',
+
+      dynamic_template_data: {
+        url: url,
+      },
+    };
+
+    // await sendNodeMailer(message);
+    await sendMailSendGrid(message);
+    return res.status(200).json({ message: 'Success' });
+    // return res.status(201).json({ user });
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+}
+
+module.exports = { handlerPayment, sendEmailHandler };

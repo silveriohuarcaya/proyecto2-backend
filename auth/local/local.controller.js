@@ -24,6 +24,7 @@ async function loginHandler(req, res, next) {
     console.log(error);
   }
 }
+
 async function registerHandler(req, res, next) {
   createUserHandler();
 }
@@ -62,8 +63,7 @@ async function verifyAccountHandler(req, res, next) {
   } catch (error) {
     return res.status(500).json({ error });
   }
-
-  res.json({ message: 'verifyAccountHandler' });
+  // res.json({ message: 'verifyAccountHandler' });
 }
 
 // async function verifyEmailHandler(req, res, next) {

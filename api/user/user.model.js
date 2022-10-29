@@ -39,7 +39,7 @@ const UserSchema = new mongoose.Schema(
     },
     avatar: {
       type: 'string',
-      default: 'https://example',
+      default: '',
     },
     role: {
       type: 'string',
@@ -54,7 +54,7 @@ const UserSchema = new mongoose.Schema(
     passwordResetExpires: Date,
     payment: Payment,
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 UserSchema.virtual('fullName').get(function fullName() {
@@ -63,8 +63,7 @@ UserSchema.virtual('fullName').get(function fullName() {
 });
 
 UserSchema.virtual('profile').get(function profile() {
-  const { firstName, lastName, email, password, isActive, role, company } =
-    this;
+  const { firstName, lastName, email, password, isActive, role } = this;
   return {
     firstName,
     lastName,
@@ -72,7 +71,6 @@ UserSchema.virtual('profile').get(function profile() {
     password,
     isActive,
     role,
-    company,
   };
 });
 
