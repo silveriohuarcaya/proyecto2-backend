@@ -3,13 +3,27 @@ const compose = require('composable-middleware');
 
 const { findUserByEmail } = require('../api/user/user.service');
 
+function signToken(payload) {
+  const token = jwt.sign(payload, 'EL_S#CR3T_DE_AMOR', { expiresIn: '1h' });
+
+  return token;
+}
+
+async function verifyToken(token) {
+  try {
+    const payload = await jwt.verify(token, 'EL_S#CR3T_DE_AMOR');
+    return payload;
+  } catch (error) {
+    return null;
+  }
+}
+
 async function isAuthenticated(req, res, next) {
   // return compose().use(async (req, res, next) => {
 
   const authHeader = req.headers?.authorization;
-
   if (!authHeader) {
-    return res.status(401).json({ message: 'Unauthorized' });
+    return res.status(401).json({ message: 'UnAuthorized' });
   }
 
   const token = authHeader.split(' ')[1];
@@ -18,7 +32,7 @@ async function isAuthenticated(req, res, next) {
   const decoded = await verifyToken(token);
 
   if (!decoded) {
-    return res.status(401).json({ message: 'Unauthorized' });
+    return res.status(401).json({ message: 'UnAuthorized' });
   }
 
   // add user to request
@@ -33,7 +47,6 @@ async function isAuthenticated(req, res, next) {
 
   next();
   return true;
-  // }
 }
 
 function hasRole(roleRequired = []) {
@@ -50,21 +63,6 @@ function hasRole(roleRequired = []) {
         return res.status(403).json({ message: 'Forbidden' });
       }
     });
-}
-
-function signToken(payload) {
-  const token = jwt.sign(payload, 'EL_S#CR3T_DE_AMOR', { expiresIn: '1h' });
-
-  return token;
-}
-
-async function verifyToken(token) {
-  try {
-    const payload = await jwt.verify(token, 'EL_S#CR3T_DE_AMOR');
-    return payload;
-  } catch (error) {
-    return null;
-  }
 }
 
 module.exports = {

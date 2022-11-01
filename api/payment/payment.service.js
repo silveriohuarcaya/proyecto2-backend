@@ -40,9 +40,9 @@ async function makePayment({ paymentMethod, amount, customer }) {
       description: 'Email Real',
       customer: customer.id,
       receipt_email: customer.email,
+      //receipt_email: true,
     });
 
-    console.log('Silverio Huarcaya', customer);
     return payment;
   } catch (error) {
     console.log('error', error);
