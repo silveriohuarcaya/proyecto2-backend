@@ -41,16 +41,17 @@ async function getByIdProductHandler(req, res) {
 async function createProductHandler(req, res) {
   const productData = req.body;
 
-  const { authorization } = req.headers;
+  // const { authorization } = req.headers;
 
-  const token = authorization?.split(' ')[1];
+  // const token = authorization?.split(' ')[1];
 
   try {
-    const payload = await verifyToken(token);
+    // const payload = await verifyToken(token);
 
     const product = await createProduct(productData);
 
-    return res.status(200).json({ token, product });
+    // return res.status(200).json({ token, product });
+    return res.status(200).json({ product });
   } catch (error) {
     return res.status(500).json({ error });
   }
@@ -61,20 +62,8 @@ async function updateProductHandler(req, res) {
   const productData = req.body;
 
   try {
-    if (!productData.password) {
-      const product = await updateProduct(id, productData);
-      return res.status(200).json(product);
-    }
-    if (productData.password.length >= 6) {
-      const salt = await bcrypt.genSalt(10);
-      productData.password = await bcrypt.hash(productData.password, salt);
-
-      const product = await updateProduct(id, productData);
-      return res.status(200).json(product);
-    }
-    return res.status(400).json({
-      error: `password ${productData.password} is shorter than the minimum allowed length (6)`,
-    });
+    const product = await updateProduct(id, productData);
+    return res.status(200).json(product);
   } catch (error) {
     return res.status(500).json({ error });
   }
