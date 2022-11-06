@@ -50,7 +50,7 @@ async function createUserHandler(req, res) {
 
     // send email to user
     const message = {
-      from: '"no-reply" <corwilgi@hotmail.com>', // sender address
+      from: 'El Puerto Escondido <corwilgi@hotmail.com>', // sender address
       to: user.email, // list of receivers
 
       subject: 'Active account template', // Subject line

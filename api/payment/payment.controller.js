@@ -1,5 +1,7 @@
 const { makePayment, createPayment, createCustomer, retrieveCustomer } = require('./payment.service');
-const { updateUser } = require('../user/user.service');
+const { updateUser, findUserByEmail } = require('../user/user.service');
+
+const { sendMailSendGrid } = require('../../utils/mail'); // Utilizando sendgrid
 
 const { sendMailSendGrid } = require('../../utils/mail'); // Utilizando sendgrid
 
@@ -67,9 +69,10 @@ async function sendEmailHandler(req, res, next) {
   const { email, url } = req.body;
 
   try {
-    // send email to user
+    const user = await findUserByEmail(email);
+
     const message = {
-      from: '"no-reply" <corwilgi@hotmail.com>', // sender address
+      from: 'El Puerto Escondido <corwilgi@hotmail.com>', // sender address
       to: email, // list of receivers
 
       subject: 'Shooping stripe', // Subject line
@@ -77,6 +80,8 @@ async function sendEmailHandler(req, res, next) {
       template_id: 'd-04e1462b459f4052a63885892103631f',
 
       dynamic_template_data: {
+        firstName: user.profile.firstName.toUpperCase(),
+        lastName: user.profile.lastName.toUpperCase(),
         url: url,
       },
     };
