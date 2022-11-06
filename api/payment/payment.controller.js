@@ -3,6 +3,8 @@ const { updateUser, findUserByEmail } = require('../user/user.service');
 
 const { sendMailSendGrid } = require('../../utils/mail'); // Utilizando sendgrid
 
+const { sendMailSendGrid } = require('../../utils/mail'); // Utilizando sendgrid
+
 async function handlerPayment(req, res) {
   let { user } = req;
   const { paymentMethod, amount } = req.body;
