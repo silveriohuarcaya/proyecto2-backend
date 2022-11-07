@@ -3,7 +3,7 @@ const cloudinary = require('cloudinary').v2;
 
 async function uploadSingleHandler(req, res) {
   const { file } = req;
-
+  console.log('silverio file', file);
   const size = file.size / 1024 / 1024; // MB
 
   if (size > 2) {
