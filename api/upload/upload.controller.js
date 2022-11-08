@@ -13,9 +13,9 @@ async function uploadSingleHandler(req, res) {
   try {
     const result = await cloudinary.uploader.upload(file.path, {
       folder: 'assets',
-      use_filename: true,
-      unique_filename: false,
-      overwrite: true,
+      // use_filename: true,
+      // unique_filename: false,
+      // overwrite: true,
       resource_type: 'auto',
     });
     return res.json(result);
