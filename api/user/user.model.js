@@ -21,21 +21,25 @@ const UserSchema = new mongoose.Schema(
     firstName: {
       type: 'string',
       required: true,
+      trim: true,
     },
     lastName: {
       type: 'string',
       required: true,
+      trim: true,
     },
     email: {
       type: 'string',
       required: true,
       unique: true,
       lowercase: true,
+      trim: true,
     },
     password: {
       type: 'string',
       required: true,
       minlength: 6,
+      trim: true,
     },
     avatar: {
       type: 'string',
@@ -63,7 +67,7 @@ UserSchema.virtual('fullName').get(function fullName() {
 });
 
 UserSchema.virtual('profile').get(function profile() {
-  const { firstName, lastName, email, password, isActive, role } = this;
+  const { firstName, lastName, email, password, isActive, role, _id } = this;
   return {
     firstName,
     lastName,
@@ -71,6 +75,7 @@ UserSchema.virtual('profile').get(function profile() {
     password,
     isActive,
     role,
+    _id,
   };
 });
 

@@ -22,8 +22,9 @@ async function isAuthenticated(req, res, next) {
   // return compose().use(async (req, res, next) => {
 
   const authHeader = req.headers?.authorization;
+
   if (!authHeader) {
-    return res.status(401).json({ message: 'UnAuthorized' });
+    return res.status(401).json({ message: 'UnAuthorized silver' });
   }
 
   const token = authHeader.split(' ')[1];
@@ -32,7 +33,7 @@ async function isAuthenticated(req, res, next) {
   const decoded = await verifyToken(token);
 
   if (!decoded) {
-    return res.status(401).json({ message: 'UnAuthorized' });
+    return res.status(401).json({ message: 'UnAuthorized decoded' });
   }
 
   // add user to request
