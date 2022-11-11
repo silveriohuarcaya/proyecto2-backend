@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
 const { getAllUser, getByIdUser, findUserByEmail, createUser, updateUser, deleteUser } = require('./user.service');
+const { signToken } = require('../../auth/auth.service');
 // const { sendNodeMailer } = require('../../utils/mail'); // Utilizando nodemailer
 const { sendMailSendGrid } = require('../../utils/mail'); // Utilizando sendgrid
 
@@ -104,17 +105,26 @@ async function updateUserHandler(req, res) {
   try {
     if (!userData.password) {
       const user = await updateUser(id, userData);
-      return res.status(200).json(user);
+
+      const token = signToken({ email: user.email });
+
+      return res.status(200).json({ token, profile: user.profile });
     }
+
     if (userData.password.length >= 6) {
       const salt = await bcrypt.genSalt(10);
       userData.password = await bcrypt.hash(userData.password, salt);
 
       const user = await updateUser(id, userData);
-      return res.status(200).json(user);
+
+      const token = signToken({ email: user.email });
+
+      return res.status(200).json({ token, profile: user.profile });
     }
+
     return res.status(400).json({
-      error: `password ${userData.password} is shorter than the minimum allowed length (6)`,
+      // error: `password ${userData.password} is shorter than the minimum allowed length (6)`,
+      error: 'Password incorrect',
     });
   } catch (error) {
     return res.status(500).json({ error });
