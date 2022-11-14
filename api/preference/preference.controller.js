@@ -1,8 +1,7 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const mercadopago = require('mercadopago');
 const { getAllPreference, createPreference } = require('./preference.service');
-const { getByIdProduct } = require('../product/product.service');
-
+// const { getByIdProduct } = require('../product/product.service');
 
 // Agrega credenciales
 mercadopago.configure({
@@ -11,7 +10,7 @@ mercadopago.configure({
 
 async function createPreferenceWebhook(req, res) {
   try {
-    console.log(req.body);
+    console.log('silverio', req.body);
     if (req.body.action === 'payment.created') {
       console.log('Payment created');
     } else if (req.body.action === 'payment.updated') {
@@ -37,9 +36,9 @@ async function getAllPreferenceHandler(req, res) {
 async function createPreferenceHandler(req, res) {
   const products = req.body;
   try {
-    for (let i = 0; i < products.length; i++) {
-      products[i] = await getByIdProduct(new mongoose.Types.ObjectId(products[i])).lean();
-    }
+    // for (let i = 0; i < products.length; i++) {
+    //   products[i] = await getByIdProduct(new mongoose.Types.ObjectId(products[i])).lean();
+    // }
     const order = await createPreference({ products });
 
     // Crea un objeto de preferencia
@@ -47,9 +46,8 @@ async function createPreferenceHandler(req, res) {
       title: product.name,
       unit_price: product.price,
       description: product.description,
-      quantity: 1,
+      quantity: product.quantity,
     }));
-
     const preference = {
       items,
       back_urls: {
