@@ -68,7 +68,7 @@ async function createUserHandler(req, res) {
       // html: `
       //   <h1 style="color: green">Welcome</h1>
       // <p style="color: #0070f3">Please click in this link to active account</p>
-      // <a href="${process.env.SMTP_FRONT_URL}/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
+      // <a href="${process.env.SMTP_FRONTEND_URL}/verify-account/${hash}" target="_blank" rel="noopener noreferrer">Verify Account</a>
       // `,
 
       // html body
