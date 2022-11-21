@@ -51,9 +51,9 @@ async function createPreferenceHandler(req, res) {
     const preference = {
       items,
       back_urls: {
-        success: `${process.env.SMTP_FRONT_URL}/mercadopago/success`,
-        failure: `${process.env.SMTP_FRONT_URL}/mercadopago/failure`,
-        pending: `${process.env.SMTP_FRONT_URL}/mercadopago/pending`,
+        success: `${process.env.SMTP_FRONTEND_URL}/mercadopago/success`,
+        failure: `${process.env.SMTP_FRONTEND_URL}/mercadopago/failure`,
+        pending: `${process.env.SMTP_FRONTEND_URL}/mercadopago/pending`,
       },
       external_reference: order._id.toString(),
     };
